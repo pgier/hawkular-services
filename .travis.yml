@@ -5,6 +5,12 @@ language: java
 services:
   - docker
 
+env:
+  global:
+    - DOCKER_IMAGE_NAME="hawkular/hawkular-services"
+    - secure: "027P2Xv6w8jIuU03GdwYOlqGJtLIomuTyBkxoyjwHQGbkHc4rCt85QHBDcI6ifQ7iAVWw+/ilaV8ZATSUB87StrY5aalAy4llURCl4lCpOYIPrOwT+ONWIY239NiOfni1o6x4fnRzQfaXtUb61//2JsXjKSO978q8zN4DALYlTEQeQCsayHZfJCCaG2g0QOQGEjSOhucQ78uKIuDdlI31QLWaZfefAnUDqs9tSxezpAFdMyN8y2wPqRQkELCIogIhnz2/fxQTAyfqo+a8jyYRVDuL3wGKPrGfG7YdFiESIbcK5C4mrghS0npg2NtKHddYi/hy3WNMLW55H/FrDLZZIXbDsX6B0WjLzyarJXn/mXtZB+zWFqUprKZDovyEbjczWTDLD4JMlxxKjSidQMx3V++hPtQ9fpf18fQ7Xh9MWQJI0quFRUo53fwnK+kEv4oWOvAZro7+6OPphVZQqq5D4OVH0DfGjrXz4czBBmzTi/oEEFYAKgkJPsOoxF/lLLKvLUSEFrstgGrShid+vQVVG9UiHo2VgAe7fzYGubtuRhy3HiLX3SFtyPBVsr6Q2XNFYm6iUmhQUJ1GH0w5PIaCnuppOuEotxwNdmuklIsJ3MozP+EKrrMtm8cszakQonHKIg/ICRJGcioPCJukvCsmofo0oTeDbH3W6+bx1gzngE="
+    - secure: "H603453qjCQlPahAlXdQA/97r9pz4kcn6IekB6MPrCP3/PrtmOZU2omMQH0kBSSZIyzSQ3BuEPNXl9gQmBTXnlNnoCe25vLo3hpKfSoM2L0/M/OjM3h+06K+C0UKAbEzGVHtuJ1N3fjo1eTpcBz8fvK/JXtajjCV3/gxjVlUM7i4pPVt+x2GFXDLFmd8vH5E2IjcoTvhDUzecU7YBWo0HQEUt4HN4VNh6Tpj3fOXgprcWZ4zESRqwithwixNGtdMbZf0j7wFI6TE9wT6En6J2Tt88gKFtGD5nEKuJxTGdsh25OH9Ye6pfeDVduKgXHdH7aCx3DwFO9u7UCY6wH+6WcB1PihJWfI+8KS512aXvjedmI5semasNlVPgecK28BVv9QDimRBawhZE0Lxg6dy90Y4moRpm8iO+3dcYC2GHyK9c8GIt2RSwW9mSmp9ukXQQLCkrzOEmR73XyTMMzXNx6OhRPr05IH0qrKT7rDHC/fZXhnJHN+yaKIcCG90hoW7MMvKHJRQ0qJ5XrPOTJGClC8bXxAD69JHFC79d07mx/IpCd2YP+zzM70IRkvY7mog9/zudtEikBnasLk7cY7YIhvBNpVihcPUd+EYOhbIDCOAex2o7VwEd9A28ebQj7KJSLmkn6avwKAS1tAkMl3NiBwmOxIIrZ0FP7FeoPT0DNo="
+
 # manage the caches here https://travis-ci.org/hawkular/hawkular-services/caches
 cache:
   directories:
@@ -35,6 +41,7 @@ script:
 
 after_success:
   - bash .travis.hawkular-client.ruby.sh
+  - bash .travis.docker-push.sh
 
 before_cache:
 # Clean the cached directories once their size exceeds the space left on the partition.
