@@ -38,11 +38,11 @@ ENV HAWKULAR_BACKEND=cassandra \
 USER root
 RUN yum install --quiet -y openssl && \
     rm -rf /var/cache/yum && \
-    mkdir -p /opt/data && \
-    chown -R jboss:jboss ${JBOSS_HOME}/{standalone,domain} /opt/data $JAVA_HOME/jre/lib/security/cacerts && \
-    chmod -R ugo+rw ${JBOSS_HOME}/{standalone,domain} /opt/data $JAVA_HOME/jre/lib/security/cacerts
+    mkdir -p /var/opt/hawkular && \
+    chown -R jboss:jboss ${JBOSS_HOME}/{standalone,domain} /var/opt/hawkular $JAVA_HOME/jre/lib/security/cacerts && \
+    chmod -R ugo+rw ${JBOSS_HOME}/{standalone,domain} /var/opt/hawkular $JAVA_HOME/jre/lib/security/cacerts
 
-VOLUME ["/opt/data"]
+VOLUME ["/var/opt/hawkular"]
 
 USER jboss
 CMD /opt/hawkular/bin/startcmd.sh
