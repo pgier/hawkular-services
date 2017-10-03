@@ -40,9 +40,7 @@
     <docker.hawkular_home>opt/hawkular</docker.hawkular_home>
     <plexus-utils.version>3.0.15</plexus-utils.version>
     <alpn-boot.version>8.1.7.v20160121</alpn-boot.version>
-    <version.cassandra>3.0.9</version.cassandra>
     <hawkular.agent.enabled>true</hawkular.agent.enabled>
-    <hawkular.metrics.ttl>14</hawkular.metrics.ttl>
   </properties>
 
   <name>Hawkular Services Docker Distribution</name>
@@ -112,7 +110,6 @@
                 <dockerFile>Dockerfile</dockerFile>
                 <args> <!-- TODO really needed or do we just want to modify the Dockerfile -->
                   <agent_enable>${hawkular.agent.enabled}</agent_enable>
-                  <metrics_ttl>${hawkular.metrics.ttl}</metrics_ttl>
                 </args>
                 <tags>
                   <tag>${docker.tag.prefix}latest</tag>
@@ -131,7 +128,6 @@
                 </volumes>
                 <env>
                   <HAWKULAR_BACKEND>remote</HAWKULAR_BACKEND>
-                  <CASSANDRA_NODES>myCassandra</CASSANDRA_NODES>
                 </env>
                 <ports>
                   <port>8080:8080</port>
@@ -139,7 +135,6 @@
                   <port>8787:8787</port>
                 </ports>
                 <links>
-                  <link>myCassandra</link>
                 </links>
                 <log>
                   <enabled>true</enabled>
@@ -149,21 +144,6 @@
               <watch>
                 <mode>none</mode>
               </watch>
-            </image>
-            <!-- A cassandra container that is used as backend storage -->
-            <image>
-              <alias>myCassandra</alias>
-              <name>cassandra:${version.cassandra}</name>
-              <run>
-                <env>
-                  <CASSANDRA_START_RPC>true</CASSANDRA_START_RPC>
-                </env>
-                <volumes>
-                  <bind>
-                    <volume>/tmp/opt/hawkular/cassandra:/var/lib/cassandra</volume>
-                  </bind>
-                </volumes>
-              </run>
             </image>
           </images>
         </configuration>

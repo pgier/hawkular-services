@@ -32,16 +32,12 @@
     <copy-artifact artifact="org.hawkular.services:hawkular-rest-api" to-location="modules/system/layers/hawkular/org/hawkular/nest/main/deployments/hawkular-rest-api.war" />
     <copy-artifact artifact="org.hawkular.services:hawkular-status" to-location="modules/system/layers/hawkular/org/hawkular/nest/main/deployments/hawkular-status.war" />
     <copy-artifact artifact="org.hawkular.services:hawkular-inventory-service" to-location="modules/system/layers/hawkular/org/hawkular/nest/main/deployments/hawkular-inventory-service.war" />
-<!-- TODO Add alerts when HAM is removed
-    <copy-artifact artifact="org.hawkular.services:hawkular-alerts" to-location="modules/system/layers/hawkular/org/hawkular/nest/main/deployments/hawkular-alerts.war" />
--->
+    <copy-artifact artifact="org.hawkular.services:hawkular-alerts-rest" to-location="modules/system/layers/hawkular/org/hawkular/nest/main/deployments/hawkular-alerts.war" />
 
-    <copy-artifact artifact="org.hawkular.agent:hawkular-wildfly-agent-download" to-location="modules/system/layers/hawkular/org/hawkular/nest/main/deployments/hawkular-wildfly-agent-download.war" />
-    <copy-artifact artifact="org.hawkular.agent:hawkular-wildfly-agent-wf-extension" to-location="standalone/configuration/hawkular-wildfly-agent-wf-extension.zip" />
-    <copy-artifact artifact="org.hawkular.agent:hawkular-wildfly-agent-wf-extension-eap6" to-location="standalone/configuration/hawkular-wildfly-agent-wf-extension-eap6.zip" />
-    <copy-artifact artifact="org.hawkular.agent:hawkular-wildfly-agent-installer" to-location="standalone/configuration/hawkular-wildfly-agent-installer.jar" />
-
-    <copy-artifact artifact="org.hawkular.metrics:hawkular-metrics-component-dist" to-location="modules/system/layers/hawkular/org/hawkular/nest/main/deployments/hawkular-metrics.ear" />
+    <copy-artifact artifact="org.hawkular.alerts:hawkular-alerts-ui" to-location="modules/system/layers/hawkular/org/hawkular/nest/main/deployments/hawkular-alerts-ui.war" />
+    <copy-artifact artifact="org.hawkular.alerts:hawkular-alerts-actions-email-standalone" to-location="modules/system/layers/hawkular/org/hawkular/nest/main/deployments/hawkular-alerts-actions-email.war" />
+    <copy-artifact artifact="org.hawkular.alerts:hawkular-alerts-actions-webhook-standalone" to-location="modules/system/layers/hawkular/org/hawkular/nest/main/deployments/hawkular-alerts-actions-webhook.war" />
+    <copy-artifact artifact="org.hawkular.alerts:hawkular-prometheus-alerter-standalone" to-location="modules/system/layers/hawkular/org/hawkular/nest/main/deployments/hawkular-prometheus-alerter.war" />
   </copy-artifacts>
 
   <file-permissions>

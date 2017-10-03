@@ -32,7 +32,7 @@
   <name>Feature pack and WAR Overlays</name>
 
   <modules>
-    <!-- <module>overlay-alerts</module>  TODO When we remove HAM -->
+    <module>overlay-alerts</module>
     <module>overlay-inventory</module>
     <module>feature-pack</module>
   </modules>
