@@ -27,7 +27,7 @@
     <version>1.0.0.Final-SNAPSHOT</version>
   </parent>
 
-  <artifactId>hawkular-services-alerts</artifactId>
+  <artifactId>hawkular-alerts-rest</artifactId>
   <packaging>war</packaging>
 
   <name>Hawkular Services Alerts WAR Overlay</name>
@@ -36,7 +36,7 @@
 
     <dependency>
       <groupId>org.hawkular.alerts</groupId>
-      <artifactId>hawkular-alerts-rest</artifactId>
+      <artifactId>hawkular-alerts-rest-standalone</artifactId>
       <version>${version.org.hawkular.alerts}</version>
       <type>war</type>
       <scope>provided</scope>
@@ -63,7 +63,7 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>org.hawkular.alerts</groupId>
-                  <artifactId>hawkular-alerts-rest</artifactId>
+                  <artifactId>hawkular-alerts-rest-standalone</artifactId>
                   <version>${version.org.hawkular.alerts}</version>
                   <type>war</type>
                   <overWrite>true</overWrite>
@@ -88,7 +88,7 @@
           <overlays>
             <overlay>
               <groupId>org.hawkular.alerts</groupId>
-              <artifactId>hawkular-alerts-rest</artifactId>
+              <artifactId>hawkular-alerts-rest-standalone</artifactId>
             </overlay>
           </overlays>
           <archive>

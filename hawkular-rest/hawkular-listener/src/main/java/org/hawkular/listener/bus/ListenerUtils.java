@@ -26,7 +26,7 @@ import org.hawkular.alerts.api.services.AlertsService;
 import org.jboss.logging.Logger;
 
 public class ListenerUtils {
-    private static final String ALERTS_SERVICE = "java:global/hawkular-metrics/hawkular-alerts/CassAlertsServiceImpl";
+    private static final String ALERTS_SERVICE = "java:global/hawkular-alerts/IspnAlertsServiceImpl";
 
     // TODO [lponce] let configure this, but new inventory won't deal with tenantId,
     // TODO MiQ works with a default tenant 'hawkular' this is for compability with alerting multi-tenant feature

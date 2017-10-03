@@ -19,7 +19,6 @@
 PREPARE_CLUSTER="${PREPARE_CLUSTER:-true}"
 OC_CLUSTER_VERSION="${OC_CLUSTER_VERSION:-v1.5.1}"
 HAWKULAR_SERVICES_IMAGE="${HAWKULAR_SERVICES_IMAGE:-hawkular/hawkular-services:0.38.0.Final}"
-CASSANDRA_IMAGE="openshift/origin-metrics-cassandra:${OC_CLUSTER_VERSION}"
 PROJECT_NAME="${PROJECT_NAME:-ephemeral}"
 ROUTE_NAME="${ROUTE_NAME:-hawkular-services}"
 ROUTE_HOSTNAME="${ROUTE_HOSTNAME:-${1}}"
@@ -31,7 +30,6 @@ echo_vars(){
   echo "PREPARE_CLUSTER=$PREPARE_CLUSTER"
   echo "OC_CLUSTER_VERSION=$OC_CLUSTER_VERSION"
   echo "HAWKULAR_SERVICES_IMAGE=$HAWKULAR_SERVICES_IMAGE"
-  echo "CASSANDRA_IMAGE=$CASSANDRA_IMAGE"
   echo "PROJECT_NAME=$PROJECT_NAME"
   echo "ROUTE_NAME=$ROUTE_NAME"
   echo "ROUTE_HOSTNAME=$ROUTE_HOSTNAME"
@@ -54,7 +52,6 @@ instantiate_template(){
   if [[ $_OC_MAJOR == 1 ]] && [[ $_OC_MINOR -lt 5 ]]; then
     # using the old syntax
     oc process -f $TEMPLATE -v HAWKULAR_SERVICES_IMAGE="$HAWKULAR_SERVICES_IMAGE" \
-                               CASSANDRA_IMAGE="$CASSANDRA_IMAGE" \
                                ROUTE_HOSTNAME="$ROUTE_HOSTNAME" \
                                `[ -z "$HAWKULAR_USER" ] || echo "HAWKULAR_USER=$HAWKULAR_USER"` \
                                `[ -z "$HAWKULAR_PASSWORD" ] || echo "HAWKULAR_PASSWORD=$HAWKULAR_PASSWORD"` \
@@ -62,7 +59,6 @@ instantiate_template(){
   else
     # using the new syntax
     oc process -f $TEMPLATE --param HAWKULAR_SERVICES_IMAGE="$HAWKULAR_SERVICES_IMAGE" \
-                            --param CASSANDRA_IMAGE="$CASSANDRA_IMAGE" \
                             --param ROUTE_HOSTNAME="$ROUTE_HOSTNAME" \
                             `[ -z "$HAWKULAR_USER" ] || echo "--param HAWKULAR_USER=$HAWKULAR_USER"` \
                             `[ -z "$HAWKULAR_PASSWORD" ] || echo "--param HAWKULAR_PASSWORD=$HAWKULAR_PASSWORD"` \

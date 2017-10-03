@@ -19,13 +19,13 @@
 # exit codes:
 # 0 ok
 # if x & 1 == 1 the /status is broken
-# if x & 2 == 2 the /metrics/status is broken
+# if x & 2 == 2 the /inventory/status is broken
 # if x & 4 == 4 the /alerts/status is broken
 # so for instance return code 7 means that everything is broken
 
 i=1
 return_code=0
-for path in /status /metrics/status /alerts/status ; do
+for path in /status /inventory/status /alerts/status ; do
   http_code=`curl -s -I -o /dev/null -w "%{http_code}" http://$HOSTNAME:8080/hawkular$path`
   [[ "$http_code" -lt "200" || "$http_code" -gt "299" ]] && return_code=$(( $return_code + $i ))
   i=$(( $i << 1 ))
