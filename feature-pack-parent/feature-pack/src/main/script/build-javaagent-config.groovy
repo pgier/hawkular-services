@@ -36,7 +36,7 @@ def template = { property, defaultValue = null ->
 config['subsystem']['enabled'] = template('hawkular.agent.enabled')
 config['storage-adapter']['username'] = template('hawkular.rest.user')
 config['storage-adapter']['password'] = template('hawkular.rest.password')
-config['storage-adapter']['url'] = template('hawkular.rest.host', 'http://127.0.0.1:8080')
+config['storage-adapter']['url'] = template('hawkular.rest.url', 'http://127.0.0.1:8080')
 
 // Disable local-dmr and use a remote-dmr which allows a more detailed configuration.
 config['managed-servers']['local-dmr']['enabled'] = false
@@ -51,7 +51,7 @@ parser.dump(config, new FileWriter(JAVAAGENT_CONFIG))
 
 // Create a SSL version
 config['storage-adapter']['security-realm'] = 'HawkularAgentRealm'
-config['storage-adapter']['url'] = template('hawkular.rest.host', 'https://127.0.0.1:8443')
+config['storage-adapter']['url'] = template('hawkular.rest.url', 'https://127.0.0.1:8443')
 
 config['managed-servers']['remote-dmr'][0]['security-realm'] = 'HawkularAgentRealm'
 config['managed-servers']['remote-dmr'][0]['use-ssl'] = true
