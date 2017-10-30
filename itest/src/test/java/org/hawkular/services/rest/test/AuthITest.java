@@ -31,10 +31,6 @@ import org.testng.annotations.Test;
 public class AuthITest extends AbstractTestBase {
     private static final Logger log = Logger.getLogger(AlertingITest.class);
     public static final String GROUP = "AuthITest";
-    private static final String alertingPath = "/hawkular/alerts";
-    private static final String apiPath = "/hawkular/api";
-    private static final String hawkularPath = "/hawkular";
-    private static final String inventoryPath = "/hawkular/inventory";
 
     @Test(groups = { GROUP })
     @RunAsClient

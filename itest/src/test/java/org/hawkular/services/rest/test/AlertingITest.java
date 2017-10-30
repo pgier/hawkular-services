@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 public class AlertingITest extends AbstractTestBase {
     private static final Logger log = Logger.getLogger(AlertingITest.class);
     public static final String GROUP = "AlertingITest";
-    private static final String alertingPath = "/hawkular/alerts";
 
     @Test(groups = { GROUP })
     @RunAsClient
