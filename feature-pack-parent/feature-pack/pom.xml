@@ -386,8 +386,6 @@
               <defaults>
                 <project.build.directory>${project.build.directory}</project.build.directory>
                 <hawkular.agent.enabled>${hawkular.agent.enabled}</hawkular.agent.enabled>
-                <hawkular.rest.user>${hawkular.rest.user}</hawkular.rest.user>
-                <hawkular.rest.password>${hawkular.rest.password}</hawkular.rest.password>
               </defaults>
               <source>${project.basedir}/src/main/script/build-javaagent-config.groovy</source>
             </configuration>

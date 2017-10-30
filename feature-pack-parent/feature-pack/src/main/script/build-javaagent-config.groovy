@@ -34,8 +34,8 @@ def template = { property, defaultValue = null ->
 
 // Configure javaagent for non ssl mode
 config['subsystem']['enabled'] = template('hawkular.agent.enabled')
-config['storage-adapter']['username'] = template('hawkular.rest.user')
-config['storage-adapter']['password'] = template('hawkular.rest.password')
+config['storage-adapter']['username'] = template('env.HAWKULAR_USER', 'unknown')
+config['storage-adapter']['password'] = template('env.HAWKULAR_PASSWORD', 'unknown')
 config['storage-adapter']['url'] = template('hawkular.rest.url', 'http://127.0.0.1:8080')
 
 // Disable local-dmr and use a remote-dmr which allows a more detailed configuration.

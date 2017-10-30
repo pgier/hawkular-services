@@ -127,12 +127,12 @@
                   </bind>
                 </volumes>
                 <env>
-                  <HAWKULAR_BACKEND>remote</HAWKULAR_BACKEND>
                 </env>
                 <ports>
                   <port>8080:8080</port>
                   <port>8443:8443</port>
                   <port>8787:8787</port>
+                  <port>9779:9779</port>
                 </ports>
                 <links>
                 </links>

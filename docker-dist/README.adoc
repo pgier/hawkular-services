@@ -9,17 +9,10 @@ This module contains the sources to build a Docker container with Hawkular
 Services.  Recent builds of the hawkular services container are available
 on https://hub.docker.com/r/hawkular/hawkular-services/[Docker Hub]
 
-== Cassandra
+== Prometheus
 
-Hawkular Services requires a running Cassandra instance with RPC enabled.  If
-you don't have an existing Cassandra instance, you can start one using Docker.
-
-  docker run --name hawkular-cassandra -e CASSANDRA_START_RPC=true -d cassandra:3.0.14
-
-This command should return the id of the running container.  You can also
-verify that it is running by using the "docker ps" command.
-
-  docker ps
+(TODO - need to finish this section)
+Hawkular Services requires a running Prometheus instance with.
 
 == Building Hawkular Services
 
@@ -36,11 +29,10 @@ to change the repo name (e.g. "something/hawkular-services").
 
 == Running Hawkular Services
 
-Next, start up the hawkular services container and point it to the Cassandra
-instance.
+Next, start up the hawkular services container.
 
-  docker run --link=hawkular-cassandra -e CASSANDRA_NODES=hawkular-cassandra -p8080:8080 `whoami`/hawkular-services
+  docker run -p8080:8080 `whoami`/hawkular-services
 
 TIP: If you want to use Hawkular Services with SSL try this command:
 
-  docker run --link=hawkular-cassandra -e CASSANDRA_NODES=hawkular-cassandra -e HAWKULAR_USE_SSL=true -p 8443:8443 `whoami`/hawkular-services
+  docker run -e HAWKULAR_USE_SSL=true -p 8443:8443 `whoami`/hawkular-services
