@@ -396,7 +396,7 @@
                     -Dhawkular.log.nest=${hawkular.log.nest}
                     -Djboss.modules.system.pkgs=org.jboss.byteman,org.jboss.logmanager
                     -Djava.util.logging.manager=org.jboss.logmanager.LogManager
-                    -javaagent:${project.build.directory}/${hawkular.services.dist.finalName}/bin/hawkular-javaagent.jar=config=${project.build.directory}/${hawkular.services.dist.finalName}/standalone/configuration/hawkular-javaagent-minimal-config.yaml,delay=60
+                    -javaagent:${project.build.directory}/${hawkular.services.dist.finalName}/bin/hawkular-javaagent.jar=config=${project.build.directory}/${hawkular.services.dist.finalName}/standalone/configuration/hawkular-javaagent-minimal-config.yaml,delay=10
                     ${debug.wildfly.argLine}
                 </jboss.options>
                 <jboss.server.config.file.name>standalone.xml</jboss.server.config.file.name>

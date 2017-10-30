@@ -50,16 +50,8 @@ public class AuthITest extends AbstractTestBase {
                             .assertJson(status -> {
                                 log.tracef("Got Alerting status [%s]", status);
                                 String foundState = status.get("status").asText();
-                                Assert.assertEquals(foundState, "STARTED");
+                                Assert.assertEquals(foundState, "UP");
                             });
-                }, Retry.times(20).delay(250));
-
-        path = apiPath + "/ping";
-        noAuthClient.newRequest()
-                .path(path)
-                .get()
-                .assertWithRetries(testResponse -> {
-                    testResponse.assertCode(200);
                 }, Retry.times(20).delay(250));
 
         path = hawkularPath + "/status";
