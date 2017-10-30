@@ -34,16 +34,7 @@ config['managed-servers']['remote-dmr'][0]['name'] = 'Local'
 //  Remove all resourceTypeSets except for Main
 config['managed-servers']['remote-dmr'][0]['resource-type-sets'] = ['Standalone Environment']
 
-config['metric-set-dmr'].each {
-    it['metric-dmr'].findAll { it['name'] == 'Heap Used' }.each {
-        it['interval'] = 5
-        it['time-units'] = 'seconds'
-    }
-}
-
-config['platform']['memory'] = [ 'interval': 5, 'time-units': 'seconds' ]
-
-// Ping more frequently
-config['subsystem']['ping-period-secs'] = 5
+// Scan more frequently
+config['subsystem']['auto-discovery-scan-period-secs'] = 10
 
 parser.dump(config, new FileWriter(JAVAAGENT_CONFIG_MINIMAL))
