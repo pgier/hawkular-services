@@ -22,11 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jboss.arquillian.testng.Arquillian;
 import org.testng.annotations.BeforeMethod;
 
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
@@ -53,6 +56,10 @@ public class AbstractTestBase extends Arquillian {
     private static final Random random = new Random();
     protected static final int httpPort;
     protected static final String httpScheme = "http";
+    protected static final String alertingPath = "/hawkular/alerts";
+    protected static final String apiPath = "/hawkular/api";
+    protected static final String hawkularPath = "/hawkular";
+    protected static final String inventoryPath = "/hawkular/inventory";
 
     static {
         authHeader = Credentials.basic(testUser, testPasword);
@@ -94,6 +101,43 @@ public class AbstractTestBase extends Arquillian {
         return new TestClient(client, mapper, baseUri, Collections.unmodifiableMap(defaultHeaders));
     }
 
+    public static String dequote(String msg) {
+        Matcher m = Pattern.compile("^\"(.*)\"$").matcher(msg);
+        return (m.find()) ? m.group(1) : msg;
+    }
+
+    public void printAllResources(String feedId, String msg) {
+
+        String all = "";
+        try {
+            all = getAllResourcesAsString(feedId);
+        } catch (Exception e) {
+            System.err.println("Cannot print all resources from inventory: " + e);
+        }
+
+        System.out.println("PRINTING ALL RESOURCES IN HAWKULAR INVENTORY");
+        System.out.println("=====");
+        if (msg != null) {
+            System.out.println(msg);
+            System.out.println("=====");
+        }
+        System.out.println(all);
+        System.out.println("=====");
+    }
+
+    public JsonNode getAllResourcesAsJson(String feedId) throws Exception {
+        return mapper.readTree(getAllResourcesAsString(feedId));
+    }
+
+    public String getAllResourcesAsString(String feedId) throws Exception {
+        String url = inventoryPath + "/resources?feedId=" + feedId;
+        String allResources;
+        allResources = testClient.newRequest()
+                .path(url)
+                .get()
+                .asString();
+        return allResources;
+    }
 
     protected TestClient testClient;
     protected TestClient noAuthClient;
