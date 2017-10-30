@@ -20,21 +20,17 @@ FROM jboss/wildfly:10.1.0.Final
 MAINTAINER Hawkular Team, hawkular-dev@lists.jboss.org
 
 ARG agent_enable
-ARG metrics_ttl=21
 ARG the_tag
 
-EXPOSE 8080 8443 8787
+EXPOSE 8080 8443 8787 9779
 
 COPY maven /
 
-ENV HAWKULAR_BACKEND=cassandra \
-    HAWKULAR_PASSWORD=password \
+ENV HAWKULAR_PASSWORD=password \
     HAWKULAR_AGENT_ENABLE=${agent_enable} \
-    CASSANDRA_NODES=myCassandra \
     HAWKULAR_USER=jdoe \
     HAWKULAR_USE_SSL=false \
-    HAWKULAR_DATA=/var/opt/hawkular \
-    HAWKULAR_METRICS_TTL=${metrics_ttl}
+    HAWKULAR_DATA=/var/opt/hawkular
 
 USER root
 RUN yum install --quiet -y openssl && \

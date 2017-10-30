@@ -85,16 +85,20 @@ create_user() {
 }
 
 run_hawkular_services() {
-  ${JBOSS_HOME}/bin/standalone.sh -b 0.0.0.0 \
+  export HAWKULAR_USER=${username}
+  export HAWKULAR_PASSWORD=${password}
+  ${JBOSS_HOME}/bin/standalone.sh \
+         -b 0.0.0.0 \
          -bmanagement 0.0.0.0 \
          -Djboss.server.data.dir=${HAWKULAR_DATA:-/var/opt/hawkular}/data \
          -Djboss.server.log.dir=${HAWKULAR_DATA:-/var/opt/hawkular}/log \
          -Dactivemq.artemis.client.global.thread.pool.max.size=${HAWKULAR_JMS_THREAD_POOL:-30} \
          -Dhawkular.agent.enabled=${HAWKULAR_AGENT_ENABLE} \
-         -Dhawkular.rest.user=${username} \
-         -Dhawkular.rest.password=${password} \
-         -Dhawkular.agent.machine.id=${HOSTNAME} -Djboss.server.name=${HOSTNAME} -Dhawkular.agent.in-container=true \
-         -Dhawkular.rest.feedId=${HOSTNAME} -Dhawkular.agent.immutable=true \
+         -Dhawkular.agent.machine.id=${HOSTNAME} \
+         -Djboss.server.name=${HOSTNAME} \
+         -Dhawkular.agent.in-container=true \
+         -Dhawkular.rest.feedId=${HOSTNAME} \
+         -Dhawkular.agent.immutable=true \
          "$@"
 }
 
