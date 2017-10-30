@@ -21,22 +21,14 @@ metadata:
   name: hawkular-services
   annotations:
     openshift.io/display-name: Hawkular Services
-    description: Hawkular Services all-in-one (including Hawkular Metrics, Hawkular Alerts and Hawkular Inventory).
+    description: Hawkular Services all-in-one (including Hawkular Alerts and Hawkular Inventory).
     iconClass: icon-wildfly
-    tags: hawkular,hawkular-services,metrics,alerts,manageiq,cassandra
+    tags: hawkular,hawkular-services,alerts,manageiq
 parameters:
 - name: HAWKULAR_SERVICES_IMAGE
   description: What docker image should be used for Hawkular Services.
   displayName: Hawkular Services Docker Image
   value: hawkular/hawkular-services:0.38.0.Final
-- name: CASSANDRA_IMAGE
-  description: What docker image should be used for cassandra node.
-  displayName: Cassandra Docker Image
-  value: openshift/origin-metrics-cassandra:v1.5.1
-- name: CASSANDRA_MEMORY_LIMIT
-  description: Maximum amount of memory for Cassandra container.
-  displayName: Cassandra Memory Limit
-  value: 2Gi
 - name: ROUTE_NAME
   description: Public route with this name will be created.
   displayName: Route Name
@@ -68,7 +60,7 @@ objects:
   metadata:
     annotations:
       description: Exposes and load balances the application pods
-      service.alpha.openshift.io/dependencies: '[{"name":"hawkular-cassandra","namespace":"","kind":"Service"}]'
+      service.alpha.openshift.io/dependencies: '[{"namespace":"","kind":"Service"}]'
     name: hawkular-services
   spec:
     ports:
@@ -84,23 +76,13 @@ objects:
       port: 9990
       protocol: TCP
       targetPort: 9990
+    - name: metrics-9779-tcp
+      port: 9779
+      protocol: TCP
+      targetPort: 9779
     selector:
       name: hawkular-services
     type: ClusterIP
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      description: Cassandra Service
-    name: hawkular-cassandra
-  spec:
-    ports:
-    - name: cql-9042-tcp
-      port: 9042
-      protocol: TCP
-      targetPort: 9042
-    selector:
-      name: hawkular-cassandra
 - apiVersion: v1
   kind: Route
   metadata:
@@ -133,10 +115,6 @@ objects:
         containers:
         - image: ${HAWKULAR_SERVICES_IMAGE}
           env:
-          - name: HAWKULAR_BACKEND
-            value: remote
-          - name: CASSANDRA_NODES
-            value: hawkular-cassandra
           - name: HAWKULAR_USE_SSL
             value: ${HAWKULAR_USE_SSL}
           - name: HAWKULAR_USER
@@ -151,6 +129,7 @@ objects:
           - containerPort: 8080
           - containerPort: 8443
           - containerPort: 9990
+          - containerPort: 9779
           livenessProbe:
             exec:
               command:
@@ -174,55 +153,4 @@ objects:
         restartPolicy: Always
         volumes:
         - name: h-services-data
-          emptyDir: {}
-
-- apiVersion: v1
-  kind: DeploymentConfig
-  metadata:
-    annotations:
-      description: Defines how to deploy the cassandra
-    name: hawkular-cassandra
-  spec:
-    replicas: 1
-    selector:
-      name: hawkular-cassandra
-    strategy:
-      type: Rolling
-      rollingParams:
-        timeoutSeconds: 300
-    template:
-      metadata:
-        labels:
-          name: hawkular-cassandra
-      spec:
-        containers:
-        - image: ${CASSANDRA_IMAGE}
-          name: hawkular-cassandra
-          volumeMounts:
-          - name: cassandra-data
-            mountPath: /var/lib/cassandra
-          ports:
-          - containerPort: 9042
-          - containerPort: 9160
-          readinessProbe:
-            exec:
-              command: ['nodetool', 'status']
-            initialDelaySeconds: 15
-            timeoutSeconds: 10
-            periodSeconds: 15
-            successThreshold: 1
-            failureThreshold: 6
-          livenessProbe:
-            exec:
-              command: ['nodetool', 'status']
-            initialDelaySeconds: 300
-            timeoutSeconds: 10
-            periodSeconds: 15
-            successThreshold: 1
-            failureThreshold: 3
-          resources:
-            limits:
-              memory: ${CASSANDRA_MEMORY_LIMIT}
-        volumes:
-        - name: cassandra-data
           emptyDir: {}

@@ -24,13 +24,9 @@ openshift_cluster_version: v3.6.0
 # if left blank, it will be defaulted
 route_hostname: ""
 
-hawkular_services_image: hawkular/hawkular-services:0.38.0.Final
+hawkular_services_image: hawkular/hawkular-services:1.0.0.Final
 
 hawkular_services_data_limit: 1Gi
-
-cassandra_image: openshift/origin-metrics-cassandra:v1.5.1
-
-cassandra_data_limit: 2Gi
 
 route_name: hawkular-services
 

@@ -376,6 +376,10 @@
               <includes>
                 <include>${hawkular.services.itest.includes}</include>
               </includes>
+              <environmentVariables>
+                <HAWKULAR_USER>${hawkular.itest.rest.user}</HAWKULAR_USER>
+                <HAWKULAR_PASSWORD>${hawkular.itest.rest.password}</HAWKULAR_PASSWORD>
+              </environmentVariables>
               <systemPropertyVariables>
                 <jboss.home>${project.build.directory}/${hawkular.services.dist.finalName}</jboss.home>
                 <jboss.options>-Xmx1024m -XX:MaxPermSize=1024m
