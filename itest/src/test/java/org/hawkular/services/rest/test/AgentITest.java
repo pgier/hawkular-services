@@ -17,16 +17,12 @@
 package org.hawkular.services.rest.test;
 
 import org.hawkular.agent.commandcli.CommandCli;
-import org.hawkular.cmdgw.ws.test.EchoCommandITest;
 import org.hawkular.services.rest.test.TestClient.Retry;
-import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.logging.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
-import okhttp3.HttpUrl;
 
 /**
  * Hawkular Agent integration tests.
@@ -41,91 +37,6 @@ public class AgentITest extends AbstractTestBase {
     private static final String testFeedId = System.getProperty("hawkular.itest.rest.feedId");
 
     /**
-     * Checks that the metrics collected by Hawkular Agent are there in Hawkular Metrics.
-     * <p>
-     * A note about {@link Test#dependsOnGroups()}: we actually depend only on {@link MetricsITest#GROUP} here but we
-     * want these tests to run at the very end of the suite so that it takes less to wait for the data points to appear
-     * in Metrics.
-     *
-     * @throws Throwable
-     */
-    @Test(dependsOnGroups = { EchoCommandITest.GROUP, AlertingITest.GROUP, MetricsITest.GROUP })
-    @RunAsClient
-    public void agentCollectingMetrics() throws Throwable {
-        final String wfHeapMetricId = "MI~R~[" + testFeedId + "/" + testFeedId + "~Local~~]~MT~WildFly Memory Metrics~Heap Used";
-        /* This low level HttpUrl building is needed because wfHeapMetricId contains slashes */
-
-        HttpUrl url = new HttpUrl.Builder()
-                .scheme(httpScheme).host(host).port(httpPort)
-                .encodedPath(MetricsITest.metricsPath)
-                .addPathSegment("gauges")
-                .addPathSegment(wfHeapMetricId)
-                .addPathSegment("raw")
-                .build();
-
-        testClient.newRequest()
-                .header("Hawkular-Tenant", testTenantId)
-                .url(url)
-                .get()
-                .assertWithRetries(testResponse -> {
-                    testResponse
-                            .assertCode(200)
-                            .assertJson(foundDataPoints -> {
-                                log.infof("Request to [%s] returned datapoints [%s]", url, foundDataPoints);
-
-                                Assert.assertTrue(foundDataPoints.isArray(), String.format(
-                                        "[%s] should have returned a json array, while it returned [%s]",
-                                        testResponse.getRequest(), foundDataPoints));
-                                Assert.assertTrue(foundDataPoints.size() >= 1, String.format(
-                                        "[%s] should have returned a json array with size >= 1, while it returned [%s]",
-                                        testResponse.getRequest(), foundDataPoints));
-                            });
-                }, Retry.times(100).delay(500));
-    }
-
-    /**
-     * Checks that the agent's ping [availability] metric is being sent and stored into Hawkular Metrics.
-     * <p>
-     * A note about {@link Test#dependsOnGroups()}: we actually depend only on {@link MetricsITest#GROUP} here but we
-     * want these tests to run at the very end of the suite so that it takes less to wait for the data points to appear
-     * in Metrics.
-     *
-     * @throws Throwable
-     */
-    @Test(dependsOnGroups = { EchoCommandITest.GROUP, AlertingITest.GROUP, MetricsITest.GROUP })
-    @RunAsClient
-    public void agentSendingPings() throws Throwable {
-        final String pingMetricId = "hawkular-feed-availability-" + testFeedId;
-
-        HttpUrl url = new HttpUrl.Builder()
-                .scheme(httpScheme).host(host).port(httpPort)
-                .encodedPath(MetricsITest.metricsPath)
-                .addPathSegment("availability")
-                .addPathSegment(pingMetricId)
-                .addPathSegment("raw")
-                .build();
-
-        testClient.newRequest()
-                .header("Hawkular-Tenant", testTenantId)
-                .url(url)
-                .get()
-                .assertWithRetries(testResponse -> {
-                    testResponse
-                            .assertCode(200)
-                            .assertJson(foundDataPoints -> {
-                                log.infof("Request to [%s] returned datapoints [%s]", url, foundDataPoints);
-
-                                Assert.assertTrue(foundDataPoints.isArray(), String.format(
-                                        "[%s] should have returned a json array, while it returned [%s]",
-                                        testResponse.getRequest(), foundDataPoints));
-                                Assert.assertTrue(foundDataPoints.size() >= 1, String.format(
-                                        "[%s] should have returned a json array with size >= 1, while it returned [%s]",
-                                        testResponse.getRequest(), foundDataPoints));
-                            });
-                }, Retry.times(500).delay(100));
-    }
-
-    /**
      * Checks that at least the local WildFly and operating system were inserted to Inventory by Hawkular Agent.
      * <p>
      * A note about {@link Test#dependsOnGroups()}: we want these tests to run at the very end of the suite so that it
@@ -134,7 +45,7 @@ public class AgentITest extends AbstractTestBase {
      * @throws Throwable
      */
     // TODO [lponce] Enable and adapt this test when agent is sync-ed with new inventory
-    // @Test(dependsOnGroups = { EchoCommandITest.GROUP, AlertingITest.GROUP, MetricsITest.GROUP })
+    // @Test(dependsOnGroups = { EchoCommandITest.GROUP, AlertingITest.GROUP })
     // @RunAsClient
     public void agentDiscoverySuccess() throws Throwable {
         final String resourcesPath = "/hawkular/metrics/strings/raw/query";
