@@ -45,7 +45,6 @@
         setype: svirt_sandbox_file_t
         recurse: yes
       with_items:
-        - cassandra
         - services
 
     #check if the oc command is available
@@ -77,7 +76,7 @@
       register: oc_client_before_15
 
     - name: Create OpenShift Cluster (make sure you have the insecure-registry added)
-      shell: "oc cluster up --version={{ openshift_cluster_version }} --metrics={{ openshift_use_metrics }}"
+      shell: "oc cluster up --version={{ openshift_cluster_version }}"
       register: command_result
       when: "create_openshift_cluster"
       failed_when: "'OpenShift is already running' not in command_result.stdout and command_result.rc != 0"
@@ -95,7 +94,7 @@
     - name: Add two Persistent Volumes (old api)
       shell: >
         oc process -f ./pvs.yaml
-        -v HAWKULAR_SERVICES_DATA_LIMIT={{ hawkular_services_data_limit }} CASSANDRA_DATA_LIMIT={{ cassandra_data_limit }}
+        -v HAWKULAR_SERVICES_DATA_LIMIT={{ hawkular_services_data_limit }} 
         | oc create -f -
       register: command_result
       when: oc_client_before_15 is defined and not oc_client_before_15|skipped and oc_client_before_15.stdout
@@ -107,7 +106,6 @@
       shell: >
         oc process -f ./pvs.yaml
         --param HAWKULAR_SERVICES_DATA_LIMIT={{ hawkular_services_data_limit }}
-        --param CASSANDRA_DATA_LIMIT={{ cassandra_data_limit }}
         | oc create -f -
       register: command_result
       when: oc_client_before_15.stdout is not defined
@@ -138,7 +136,6 @@
       shell: >
         oc process -f ./hawkular-services-persistent.yaml
         -v HAWKULAR_SERVICES_IMAGE={{ hawkular_services_image }}
-        CASSANDRA_IMAGE={{ cassandra_image }}
         ROUTE_HOSTNAME={{ route_hostname }}
         `[ -z "{{ hawkular_user }}" ] || echo "HAWKULAR_USER={{ hawkular_user }}"` \
         `[ -z "{{ hawkular_password }}" ] || echo "HAWKULAR_PASSWORD={{ hawkular_password }}"` \
@@ -154,7 +151,6 @@
       shell: >
         oc process -f ./hawkular-services-persistent.yaml
         --param HAWKULAR_SERVICES_IMAGE={{ hawkular_services_image }}
-        --param CASSANDRA_IMAGE={{ cassandra_image }}
         --param ROUTE_HOSTNAME={{ route_hostname }}
         `[ -z "{{ hawkular_user }}" ] || echo "--param HAWKULAR_USER={{ hawkular_user }}"` \
         `[ -z "{{ hawkular_password }}" ] || echo "--param HAWKULAR_PASSWORD={{ hawkular_password }}"` \
@@ -169,7 +165,6 @@
       shell: >
         oc process -f ./hawkular-services-persistent-ssl.yaml
         -v HAWKULAR_SERVICES_IMAGE={{ hawkular_services_image }}
-        CASSANDRA_IMAGE={{ cassandra_image }}
         ROUTE_HOSTNAME={{ route_hostname }}
         HAWKULAR_SECRET={{ secret_name }}
         SERVICE_ACCOUNT_NAME={{ service_account }}
@@ -186,7 +181,6 @@
       shell: >
         oc process -f ./hawkular-services-persistent-ssl.yaml
         --param HAWKULAR_SERVICES_IMAGE={{ hawkular_services_image }}
-        --param CASSANDRA_IMAGE={{ cassandra_image }}
         --param ROUTE_HOSTNAME={{ route_hostname }}
         --param HAWKULAR_SECRET={{ secret_name }}
         --param SERVICE_ACCOUNT_NAME={{ service_account }}

@@ -97,8 +97,8 @@ oc logs -f `oc get pod -l name=hawkular-services -o custom-columns=:metadata.nam
 [[additional-info]]
 Additional Information
 ~~~~~~~~~~~~~~~~~~~~~~
-The ansible playbook creates two persistent volumes that use the `hostPath` strategy. These PVs are then
-used by the hawkular-services and cassandra containers. Using the hostPath is good for demonstration purposes
+The ansible playbook creates persistent volumes that use the `hostPath` strategy. These PVs are then
+used by the hawkular-services containers. Using the hostPath is good for demonstration purposes
 but in production it is not recommended because it uses the filesystem path from the node, but it is not
 guaranteed that the pod will be started on the same node all the time. In one node cluster this is not an issue. If
 you need something more production ready, consult the

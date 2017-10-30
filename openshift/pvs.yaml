@@ -22,10 +22,6 @@ parameters:
   description: Maximum amount data used by hawkular-services container (mostly logging)
   displayName: Hawkular Services Container Data Limit
   value: 1Gi
-- name: CASSANDRA_DATA_LIMIT
-  description: Maximum amount data used by Cassandra container
-  displayName: Cassandra Container Data Limit
-  value: 2Gi
 
 objects:
 - apiVersion: v1
@@ -42,17 +38,3 @@ objects:
     persistentVolumeReclaimPolicy: Retain
     hostPath:
       path: /tmp/pv-services
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: cassandra-pv
-    labels:
-      type: cassandra
-  spec:
-    capacity:
-      storage: ${CASSANDRA_DATA_LIMIT}
-    accessModes:
-      - ReadWriteOnce
-    persistentVolumeReclaimPolicy: Retain
-    hostPath:
-      path: /tmp/pv-cassandra
