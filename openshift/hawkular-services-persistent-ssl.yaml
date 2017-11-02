@@ -134,7 +134,6 @@ objects:
             value: ${HAWKULAR_USER}
           - name: HAWKULAR_PASSWORD
             value: ${HAWKULAR_PASSWORD}
-          imagePullPolicy: IfNotPresent
           name: hawkular-services
           volumeMounts:
           - name: h-services-data
