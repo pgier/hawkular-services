@@ -24,12 +24,12 @@
 SCRIPT_BASEDIR=$(dirname $(readlink -f "$0"))
 TARGET_DIR=$(readlink -f ${SCRIPT_BASEDIR}/../../../target)
 JBOSS_HOME=$(readlink -f ${TARGET_DIR}/hawkular-services-dist-*)
-JBOSS_CONFIG_DIR=${JBOSS_HOME}/standalone/configuration/hawkular
+JBOSS_DATA_DIR=${JBOSS_HOME}/standalone/data/prometheus
 
 docker run \
   -p 9090:9090 \
   -v ${SCRIPT_BASEDIR}/prometheus.yml:/prometheus.yml \
-  -v ${JBOSS_CONFIG_DIR}:/hawkular \
+  -v ${JBOSS_DATA_DIR}:/hawkular/prometheus \
   --net="host" \
   prom/prometheus \
     -config.file=/prometheus.yml \
