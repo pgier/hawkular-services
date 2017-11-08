@@ -18,7 +18,7 @@
 
 # This is a test script that runs a Prometheus Server in docker such that it can scrape
 # all agent metrics endpoints. This assumes you are running the Hawkular Services
-# found in the target/ directory of this source repo.
+# that has been built locally and found in the target/ directory of this source repo.
 # Thus this script is for developers and not intended for anyone else.
 
 SCRIPT_BASEDIR=$(dirname $(readlink -f "$0"))

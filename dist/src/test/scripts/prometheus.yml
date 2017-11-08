@@ -29,5 +29,5 @@ scrape_configs:
   - job_name: hawkular
     file_sd_configs:
     - files:
-      - /hawkular/prometheus/*.json
+      - /var/hawkular/data/prometheus/*.json
       refresh_interval: 10s
