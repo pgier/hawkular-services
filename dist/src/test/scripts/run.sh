@@ -43,5 +43,5 @@ docker run \
   --volume ${HAWKULAR_DATA}:/var/hawkular \
   --net "host" \
   --volume ${SCRIPT_BASEDIR}/prometheus.yml:/prometheus.yml \
-  prom/prometheus \
-    -config.file=/prometheus.yml
+  prom/prometheus:v2.0.0 \
+    --config.file=/prometheus.yml
