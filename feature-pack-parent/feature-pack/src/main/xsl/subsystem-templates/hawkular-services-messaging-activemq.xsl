@@ -25,13 +25,6 @@
     <xsl:copy>
       <xsl:apply-templates select="node()|comment()|@*" />
     </xsl:copy>
-
-    <xsl:comment> Alerts </xsl:comment>
-    <jms-topic name="HawkularAlertData" entries="java:/topic/HawkularAlertData"/>
-    <jms-queue name="HawkularAlertsPluginsQueue" entries="java:/queue/HawkularAlertsPluginsQueue"/>
-    <jms-queue name="HawkularAlertsActionsResponseQueue" entries="java:/queue/HawkularAlertsActionsResponseQueue"/>
-    <jms-topic name="HawkularAlertsActionsTopic" entries="java:/topic/HawkularAlertsActionsTopic"/>
-
     <xsl:comment> Hawkular/Glue </xsl:comment>
     <jms-topic name="HawkularCommandEvent" entries="java:/queue/HawkularCommandEvent"/>
   </xsl:template>
