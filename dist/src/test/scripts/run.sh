@@ -16,32 +16,64 @@
 # limitations under the License.
 #
 
-# This is a test script that runs a Hawkular Services server and a Prometheus Server
-# both in docker.
+# This is a test script that can run a Hawkular Services server and a Prometheus Server
+# both in docker, as well as stop those containers.
 # Thus this script is for anyone that wants to demo a simple Hawkular Services setup
 # without having to build anything. You just need this script file and the prometeus.yml
 # configuration file.
 
+# These are the images that are to be started or stopped
+HAWKULAR_SERVICES_IMAGE=hawkular/hawkular-services:hawkular-1275
+PROMETHEUS_IMAGE=prom/prometheus:v2.0.0
+
+# The directory where this script is found (and where the prometheus yml file should be)
 SCRIPT_BASEDIR=$(dirname $(readlink -f "$0"))
 
-if [[ ! -d $HAWKULAR_DATA ]]; then
-  HAWKULAR_DATA=/tmp/hawkular
-fi
-mkdir -p $HAWKULAR_DATA
+start()  {
+  echo Starting containers...
+  if [[ ! -d $HAWKULAR_DATA ]]; then
+    HAWKULAR_DATA=/tmp/hawkular
+  fi
+  mkdir -p $HAWKULAR_DATA
 
-docker run \
-  --detach \
-  --publish 8080:8080 \
-  --volume ${HAWKULAR_DATA}:/var/hawkular \
-  --net "host" \
-  --env HAWKULAR_DATA=/var/hawkular \
-  hawkular/hawkular-services:hawkular-1275
+  docker run \
+    --detach \
+    --publish 8080:8080 \
+    --volume ${HAWKULAR_DATA}:/var/hawkular \
+    --net "host" \
+    --env HAWKULAR_DATA=/var/hawkular \
+    ${HAWKULAR_SERVICES_IMAGE}
 
-docker run \
-  --detach \
-  --publish 9090:9090 \
-  --volume ${HAWKULAR_DATA}:/var/hawkular \
-  --net "host" \
-  --volume ${SCRIPT_BASEDIR}/prometheus.yml:/prometheus.yml \
-  prom/prometheus:v2.0.0 \
-    --config.file=/prometheus.yml
+  docker run \
+    --detach \
+    --publish 9090:9090 \
+    --volume ${HAWKULAR_DATA}:/var/hawkular \
+    --net "host" \
+    --volume ${SCRIPT_BASEDIR}/prometheus.yml:/prometheus.yml \
+    ${PROMETHEUS_IMAGE} \
+      --config.file=/prometheus.yml
+}
+
+stop() {
+  echo Stopping containers...
+  docker kill $(docker ps -q -f ancestor=${HAWKULAR_SERVICES_IMAGE} -f ancestor=${PROMETHEUS_IMAGE})
+}
+
+status() {
+  docker ps -f ancestor=${HAWKULAR_SERVICES_IMAGE} -f ancestor=${PROMETHEUS_IMAGE}
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status
+    ;;
+  *)
+    echo "Usage $0 <start|stop|status>"
+    ;;
+esac
