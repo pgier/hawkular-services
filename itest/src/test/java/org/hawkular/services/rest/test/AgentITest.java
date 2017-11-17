@@ -72,8 +72,8 @@ public class AgentITest extends AbstractTestBase {
 
                 }, Retry.times(30).delay(1000));
 
-        final String osIdEncoded = testFeedId + "~platform~%2FOPERATING_SYSTEM=itest-feed_OperatingSystem";
-        final String osId = testFeedId + "~platform~/OPERATING_SYSTEM=itest-feed_OperatingSystem";
+        final String osIdEncoded = testFeedId + "~Local JMX~org.hawkular.agent:subtype=operatingsystem,type=platform";
+        final String osId = testFeedId + "~Local JMX~org.hawkular.agent:subtype=operatingsystem,type=platform";
         testClient.newRequest()
                 .path(inventoryPath + "/resources/" + osIdEncoded)
                 .get()
